@@ -1,4 +1,4 @@
-# CustomAuth - NextJS + Backend Authentication Library
+# CustomAuth
 
 **⚠️ Generated with AI - Use at your own risk**
 
