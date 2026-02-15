@@ -180,14 +180,6 @@ declare module 'custom-auth' {
 }
 ```
 
-Make sure your `tsconfig.json` includes the `types/` folder:
-
-```json
-{
-  "include": ["types/**/*.d.ts", "src/**/*"]
-}
-```
-
 ### Utility Functions
 
 #### `getAccessToken()`
