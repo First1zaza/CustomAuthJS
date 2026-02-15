@@ -2,12 +2,6 @@
 
 **⚠️ Generated with AI - Use at your own risk**
 
-This authentication library was generated with AI and is provided as-is. While it can be used in your projects, you are responsible for:
-- Testing thoroughly in your environment
-- Security audits and vulnerability checks
-- Compliance with your project requirements
-- Maintenance and updates
-
 ## About This Library
 
 A frontend authentication library for NextJS applications with clear separation between Frontend and Backend. Provides a pattern for integrating with backend authentication APIs.
@@ -400,61 +394,26 @@ export default function SignInForm() {
 
 ### Protected Page Example
 
-**Option 1: Middleware-only (Recommended)**
-
-Middleware already protects the route, so you don't need client-side checks:
+**Middleware**
 
 ```typescript
-import { useAuth } from 'custom-auth';
+import { authMiddleware } from 'custom-auth';
+import { NextResponse } from 'next/server';
 
-export default function ProtectedPage() {
-    const { session, isLoading } = useAuth();
+export const middleware = authMiddleware({
+    protectedRoutes: ['/dashboard', '/profile', '/admin', '/settings'],
+    publicRoutes: ['/signin', '/signup', '/'],
+    callbacks: {
+        authorized: async ({ token, req }) => {
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+            // Add custom authorization logic here
+            // You can check token claims, user roles, permissions, etc.
+            // Return false to deny access, or return NextResponse to redirect
 
-    return (
-        <div>
-            <h1>Welcome, {session?.user?.name}</h1>
-            {/* Page content */}
-        </div>
-    );
-}
-```
-
-**Option 2: Middleware + Client-side Check (Extra Safety)**
-
-For better UX or additional validation:
-
-```typescript
-import { useAuth } from 'custom-auth';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-
-export default function ProtectedPage() {
-    const { isAuthenticated, isLoading } = useAuth();
-    const router = useRouter();
-
-    useEffect(() => {
-        // Additional client-side check
-        // This is optional - middleware already protects this route
-        if (!isLoading && !isAuthenticated) {
-            router.push('/signin');
         }
-    }, [isAuthenticated, isLoading]);
-
-    if (isLoading) {
-        return <div>Loading...</div>;
     }
-
-    return <div>This is a protected page</div>;
-}
+});
 ```
-
-**Which should you use?**
-- ✅ **Option 1** - Simpler, middleware handles protection
-- ✅ **Option 2** - Better UX during loading, additional client-side validation
 
 ## Default Values
 
